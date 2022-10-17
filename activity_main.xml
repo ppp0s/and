@@ -140,14 +140,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add(0,Menu_ABOUT,0,"關於").setIcon(android.R.drawable.SHOW_AS_ACTION_AWAYS);
+        menu.add(0,Menu_ABOUT,0,"關於");
         menu.add(0,Menu_QUIT,0,"結束");
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-
+        switch(item.getItemId()){
+            case Menu_ABOUT:
+                Dialog();
+                break;
+            case Menu_QUIT:
+                finish();
+                break;
+        }
         return super.onContextItemSelected(item);
     }
 }
