@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //////////////////////////////////////
+    // Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu_event(menu);
@@ -168,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //////////////////////////////////////
+    // Context Menu
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         menu_event(menu);
