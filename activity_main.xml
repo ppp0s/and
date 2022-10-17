@@ -1,0 +1,153 @@
+package com.example.calcbmi;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import java.text.DecimalFormat;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText eText_h;
+    private EditText eText_w;
+    private TextView Tresult;
+    private TextView sug;
+    private Button btnsumbit;
+    private Button btnclear;
+
+    protected static final int Menu_ABOUT = Menu.FIRST;
+    protected static final int Menu_QUIT = Menu.FIRST+1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        findViews();
+        setListener();
+        //Dialog();
+        registerForContextMenu(btnsumbit);
+    }
+
+
+    private void findViews(){
+
+        eText_h = findViewById(R.id.edt_hei);
+        eText_w = findViewById(R.id.edt_wei);
+        btnsumbit = findViewById(R.id.sumbit);
+        btnclear = findViewById(R.id.clear);
+        Tresult = findViewById(R.id.result);
+        sug = findViewById(R.id.sug);
+
+    }
+    private void setListener(){
+        btnsumbit.setOnClickListener(calc);
+        btnclear.setOnClickListener(clear);
+    }
+
+
+    View.OnClickListener calc = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            try {
+            showsug(calcBMI());
+
+            }catch (Exception e){
+                Toast.makeText(MainActivity.this,"你不能沒有輸入資料",Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+    private void Dialog(){
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("關於 BMI 程式")
+                .setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println();
+                    }
+                })
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println();
+                    }
+                })                .setMessage("版本: v1.0").show();
+    }
+
+    View.OnClickListener clear = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            eText_h.setText("");
+            eText_w.setText("");
+            Tresult.setText("");
+            sug.setText("");
+
+        }
+    };
+
+    private double calcBMI(){
+
+            double hei = Double.parseDouble(eText_h.getText().toString()) / 100;
+            double kg = Double.parseDouble(eText_w.getText().toString());
+
+
+        double bmi = kg / (hei * hei);
+        DecimalFormat df = new DecimalFormat("0.0");
+        Tresult.setText("體重: " + df.format(bmi));
+        return bmi;
+    }
+    private void showsug(double d){
+        if (d < 18.5) {
+            sug.setText("過輕");
+        } else if (d < 24) {
+            sug.setText("標準");
+        } else if (d < 27) {
+            sug.setText("微胖");
+        } else {
+            sug.setText("過胖");
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0,Menu_ABOUT,0,"關於");
+        menu.add(0,Menu_QUIT,0,"結束");
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()){
+            case Menu_ABOUT:
+                Dialog();
+                break;
+            case Menu_QUIT:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add(0,Menu_ABOUT,0,"關於").setIcon(android.R.drawable.SHOW_AS_ACTION_AWAYS);
+        menu.add(0,Menu_QUIT,0,"結束");
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        return super.onContextItemSelected(item);
+    }
+}
