@@ -6,6 +6,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -29,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnsumbit;
     private Button btnclear;
     protected static final int Menu_ABOUT = Menu.FIRST;
-    protected static final int Menu_QUIT = Menu.FIRST + 1;
+    protected static final int Menu_INDEX =Menu.FIRST + 1;
+    protected static final int Menu_QUIT = Menu.FIRST + 2;
 
     //////////////////////////////////////
 // 重構: 按鈕事件
@@ -135,6 +138,9 @@ public class MainActivity extends AppCompatActivity {
         menu.add(0, Menu_ABOUT, 0, "關於")
                 .setIcon(android.R.drawable.ic_menu_help)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, Menu_INDEX, 0, "首頁")
+                .setIcon(android.R.drawable.ic_menu_help)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         menu.add(0, Menu_QUIT, 0, "結束")
                 .setIcon(android.R.drawable.ic_menu_help)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -146,6 +152,11 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case Menu_ABOUT:
                 Dialog();
+                break;
+            case Menu_INDEX:
+                Uri uri = Uri.parse("http://www.google.com/");
+                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
                 break;
             case Menu_QUIT:
                 finish();
