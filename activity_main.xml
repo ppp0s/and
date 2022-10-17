@@ -1,5 +1,5 @@
 package com.example.calcbmi;
-
+//////////////////////////////////////
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,18 +15,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.text.DecimalFormat;
 
-public class MainActivity extends AppCompatActivity {
 
+public class MainActivity extends AppCompatActivity {
+//////////////////////////////////////
+// 結構化: 宣告變數
     private EditText eText_h;
     private EditText eText_w;
     private TextView Tresult;
     private TextView sug;
     private Button btnsumbit;
     private Button btnclear;
-
     protected static final int Menu_ABOUT = Menu.FIRST;
     protected static final int Menu_QUIT = Menu.FIRST+1;
 
+//////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
