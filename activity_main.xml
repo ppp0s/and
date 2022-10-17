@@ -18,7 +18,7 @@ import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
 //////////////////////////////////////
-// 結構化: 宣告變數
+// 重構: 宣告參數
     private EditText eText_h;
     private EditText eText_w;
     private TextView Tresult;
@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnclear;
     protected static final int Menu_ABOUT = Menu.FIRST;
     protected static final int Menu_QUIT = Menu.FIRST+1;
-
 //////////////////////////////////////
+// 重構: 按鈕事件
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         //Dialog();
         registerForContextMenu(btnsumbit);
     }
-
-
+//////////////////////////////////////
+// 重構: 搜尋元件
     private void findViews(){
 
         eText_h = findViewById(R.id.edt_hei);
@@ -48,42 +48,43 @@ public class MainActivity extends AppCompatActivity {
         btnclear = findViewById(R.id.clear);
         Tresult = findViewById(R.id.result);
         sug = findViewById(R.id.sug);
-
     }
+//////////////////////////////////////
+// 重構: 按鈕監聽
     private void setListener(){
         btnsumbit.setOnClickListener(calc);
         btnclear.setOnClickListener(clear);
     }
-
-
-    View.OnClickListener calc = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            try {
-            showsug(calcBMI());
-
-            }catch (Exception e){
-                Toast.makeText(MainActivity.this,"你不能沒有輸入資料",Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
+//////////////////////////////////////
+// Dialog 視窗
     private void Dialog(){
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("關於 BMI 程式")
                 .setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        System.out.println();
                     }
                 })
                 .setPositiveButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        System.out.println();
                     }
-                })                .setMessage("版本: v1.0").show();
+                }).setMessage("版本: v1.0").show();
     }
-
+//////////////////////////////////////
+// calcBMI 按鈕的處理事件
+    View.OnClickListener calc = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            try {
+            showsug(calcBMI());
+            }catch (Exception e){
+                Toast.makeText(MainActivity.this,"你不能沒有輸入資料",Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+//////////////////////////////////////
+// clear 按鈕的處理事件
     View.OnClickListener clear = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -94,18 +95,18 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
-
+//////////////////////////////////////
+// calcBMI 的計算
     private double calcBMI(){
-
-            double hei = Double.parseDouble(eText_h.getText().toString()) / 100;
-            double kg = Double.parseDouble(eText_w.getText().toString());
-
-
+        double hei = Double.parseDouble(eText_h.getText().toString()) / 100;
+        double kg = Double.parseDouble(eText_w.getText().toString());
         double bmi = kg / (hei * hei);
         DecimalFormat df = new DecimalFormat("0.0");
         Tresult.setText("體重: " + df.format(bmi));
         return bmi;
     }
+//////////////////////////////////////
+// 顯示建議
     private void showsug(double d){
         if (d < 18.5) {
             sug.setText("過輕");
@@ -117,46 +118,46 @@ public class MainActivity extends AppCompatActivity {
             sug.setText("過胖");
         }
     }
-
+//////////////////////////////////////
+// 重構: 選單的選項
+    private void menu_event(Menu menu) {
+        menu.add(0, Menu_ABOUT, 0, "關於");
+        menu.add(0, Menu_QUIT, 0, "結束");
+    }
+//////////////////////////////////////
+// 重構: 選單的事件
+    private void item_selects(MenuItem item) {
+        switch (item.getItemId()) {
+            case Menu_ABOUT:
+                Dialog();
+                break;
+            case Menu_QUIT:
+                finish();
+                break;
+        }
+    }
+//////////////////////////////////////
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0,Menu_ABOUT,0,"關於");
-        menu.add(0,Menu_QUIT,0,"結束");
-
+        menu_event(menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+//////////////////////////////////////
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch(item.getItemId()){
-            case Menu_ABOUT:
-                Dialog();
-                break;
-            case Menu_QUIT:
-                finish();
-                break;
-        }
+    item_selects(item);
         return super.onOptionsItemSelected(item);
     }
-
+//////////////////////////////////////
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add(0,Menu_ABOUT,0,"關於");
-        menu.add(0,Menu_QUIT,0,"結束");
+        menu_event(menu);
         super.onCreateContextMenu(menu, v, menuInfo);
     }
-
+//////////////////////////////////////
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case Menu_ABOUT:
-                Dialog();
-                break;
-            case Menu_QUIT:
-                finish();
-                break;
-        }
+    item_selects(item);
         return super.onContextItemSelected(item);
     }
 }
