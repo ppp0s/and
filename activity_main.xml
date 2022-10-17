@@ -1,8 +1,10 @@
 package com.example.calcbmi;
 //////////////////////////////////////
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -13,11 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.text.DecimalFormat;
 
 
 public class MainActivity extends AppCompatActivity {
-//////////////////////////////////////
+    //////////////////////////////////////
 // 重構: 宣告參數
     private EditText eText_h;
     private EditText eText_w;
@@ -26,8 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btnsumbit;
     private Button btnclear;
     protected static final int Menu_ABOUT = Menu.FIRST;
-    protected static final int Menu_QUIT = Menu.FIRST+1;
-//////////////////////////////////////
+    protected static final int Menu_QUIT = Menu.FIRST + 1;
+
+    //////////////////////////////////////
 // 重構: 按鈕事件
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
         //Dialog();
         registerForContextMenu(btnsumbit);
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
 // 重構: 搜尋元件
-    private void findViews(){
+    private void findViews() {
 
         eText_h = findViewById(R.id.edt_hei);
         eText_w = findViewById(R.id.edt_wei);
@@ -49,15 +54,17 @@ public class MainActivity extends AppCompatActivity {
         Tresult = findViewById(R.id.result);
         sug = findViewById(R.id.sug);
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
 // 重構: 按鈕監聽
-    private void setListener(){
+    private void setListener() {
         btnsumbit.setOnClickListener(calc);
         btnclear.setOnClickListener(clear);
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
 // Dialog 視窗
-    private void Dialog(){
+    private void Dialog() {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("關於 BMI 程式")
                 .setPositiveButton("確認", new DialogInterface.OnClickListener() {
@@ -71,19 +78,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).setMessage("版本: v1.0").show();
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
 // calcBMI 按鈕的處理事件
     View.OnClickListener calc = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             try {
-            showsug(calcBMI());
-            }catch (Exception e){
-                Toast.makeText(MainActivity.this,"你不能沒有輸入資料",Toast.LENGTH_SHORT).show();
+                showsug(calcBMI());
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, "你不能沒有輸入資料", Toast.LENGTH_SHORT).show();
             }
         }
     };
-//////////////////////////////////////
+    //////////////////////////////////////
 // clear 按鈕的處理事件
     View.OnClickListener clear = new View.OnClickListener() {
         @Override
@@ -95,9 +103,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
-//////////////////////////////////////
+
+    //////////////////////////////////////
 // calcBMI 的計算
-    private double calcBMI(){
+    private double calcBMI() {
         double hei = Double.parseDouble(eText_h.getText().toString()) / 100;
         double kg = Double.parseDouble(eText_w.getText().toString());
         double bmi = kg / (hei * hei);
@@ -105,9 +114,10 @@ public class MainActivity extends AppCompatActivity {
         Tresult.setText("體重: " + df.format(bmi));
         return bmi;
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
 // 顯示建議
-    private void showsug(double d){
+    private void showsug(double d) {
         if (d < 18.5) {
             sug.setText("過輕");
         } else if (d < 24) {
@@ -118,13 +128,19 @@ public class MainActivity extends AppCompatActivity {
             sug.setText("過胖");
         }
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
 // 重構: 選單的選項
     private void menu_event(Menu menu) {
-        menu.add(0, Menu_ABOUT, 0, "關於");
-        menu.add(0, Menu_QUIT, 0, "結束");
+        menu.add(0, Menu_ABOUT, 0, "關於")
+                .setIcon(android.R.drawable.ic_menu_help)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, Menu_QUIT, 0, "結束")
+                .setIcon(android.R.drawable.ic_menu_help)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
 // 重構: 選單的事件
     private void item_selects(MenuItem item) {
         switch (item.getItemId()) {
@@ -136,28 +152,32 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu_event(menu);
         return super.onCreateOptionsMenu(menu);
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    item_selects(item);
+        item_selects(item);
         return super.onOptionsItemSelected(item);
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         menu_event(menu);
         super.onCreateContextMenu(menu, v, menuInfo);
     }
-//////////////////////////////////////
+
+    //////////////////////////////////////
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-    item_selects(item);
+        item_selects(item);
         return super.onContextItemSelected(item);
     }
 }
